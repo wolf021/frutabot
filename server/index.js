@@ -6,11 +6,13 @@ const app = express()
 let port = 5000
 const token = "6871871417:AAGjrL4vkZKL31KBHnIYuOE-uzuggnCGJYE"
 
+
+
 const products = [
-  { id: 1, name: "Apple", price: 1.5 },
-  { id: 2, name: "Banana", price: 1 },
-  { id: 3, name: "Orange", price: 2 },
-]
+  { id: 1, name: "Apple", price: 1.5, sellerId: 6448364913 },
+  { id: 2, name: "Banana", price: 1, sellerId: 9876543210 },
+  { id: 3, name: "Orange", price: 2, sellerId: 6448364913 },
+];
 
 const bot = new TelegramBot(token, { polling: true })
 
@@ -22,20 +24,6 @@ bot.onText(/\/start/, (msg) => {
   )
 })
 
-// Handle '/products' command to display available products
-// bot.onText(/\/products/, (msg) => {
-//     chatId = msg.chat.id;
-//     let message = 'Available Products:\n';
-
-//     bot.sendMessage(chatId, message);
-//       {
-//         products.map((product) => {
-//             message = `${product.id} ${product.name} ${product.price}`
-//             console.log(message)
-//             bot.sendMessage(chatId, message);
-//         })
-//     }
-// });
 
 function gennerateProductBUTTON() {
   return products.map((product) => ({
@@ -56,9 +44,9 @@ bot.onText(/\/products/, (msg) => {
   bot.sendMessage(chatId, message, options)
 })
 const userRoles = {
-  byuserUserId: "buyer",
-  sellerUserId: "seller",
-}
+  6448364913: "seller",
+  2123682001: "buyer",
+};
 
 bot.on("message", (msg) => {
   const chatId = msg?.chat?.id
@@ -67,15 +55,16 @@ bot.on("message", (msg) => {
 
   console.log(msg)
 
-  const role = "seller"
+  const role = userRoles[userID];
+
 
   if (role === "buyer") {
-    const sellerUserId = "sellerUserId"
-    bot.sendMessage(userID, `Buyer inquiry:${text}`)
+    const sellerUserId = 6448364913
+    bot.sendMessage(sellerUserId, `Buyer inquiry:${text}`)
     console.log(text)
 } else if (role === "seller") {
-    const buyerUserId = "buyerUserId"
-    bot.sendMessage(userID, `Seller inquiry:${text}`)
+    const buyerUserId = 2123682001
+    bot.sendMessage(buyerUserId, `Seller replied:${text}`)
     
     
     
