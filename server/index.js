@@ -1,10 +1,11 @@
 const express = require("express")
 const TelegramBot = require("node-telegram-bot-api")
+require('dotenv').config();
 
 const app = express()
 
-let port = 5000
-const token = "6871871417:AAGjrL4vkZKL31KBHnIYuOE-uzuggnCGJYE"
+let port = process.env.PORT || 5000
+const token = process.env.TELEGRAM_BOT_TOKEN
 
 
 
@@ -22,6 +23,7 @@ bot.onText(/\/start/, (msg) => {
     chatId,
     "Welcome to our fruit shop! Type /products to see available products."
   )
+  
 })
 
 
@@ -71,7 +73,5 @@ bot.on("message", (msg) => {
   }
 })
 
-app.listen(() => {
-  console.log("listening on port", port)
-})
+
 
